@@ -1,0 +1,214 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* LAYOUT */
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+.active {
+    display: flex;
+}
+.hidden {
+    display: none;
+}
+.done {
+    text-decoration: line-through;
+    background-color: #ccc;
+}
+.flexx {
+    display: flex;
+    align-items: center;
+}
+.flex__center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.flex__between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* BTN */
+.btn {
+    border: none;
+    outline: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    cursor: pointer;
+    background-color: #36AE7C;
+    transition: all 0.3s ease-in;
+    color: #fff;
+}
+.btn:hover {
+    background-color: #019267;
+}
+.btn__secondary {
+    background-color: gray;
+}
+.btn__secondary:hover {
+    background-color: #576F72;
+}
+.btn__danger {
+    background-color: #D61C4E;
+}
+.btn__danger:hover {
+    background-color: #B22727;
+}
+.btn__group {
+    margin-top: 10px;
+}
+.btn__group .btn:not(:first-child) {
+    margin-left: 10px;
+}
+
+/* FORM  */
+.input__control {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+.input__control label {
+    margin-bottom: 10px;
+}
+.input__control input {
+    border: 1px solid #ccc;
+    padding: 7px 10px;
+    border-radius: 4px;
+    color: #444;
+    outline: none;
+}
+
+
+/* HEADER */
+.header {
+    padding: 10px 0;
+}
+.header h2 {
+    color: #444;
+}
+
+/* PAGE */
+.page {
+    margin: 50px 0 100px;
+}
+
+/* MODAL & OVERLAY */
+.overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: none;
+    padding: 0 15px;
+}
+.overlay.active {
+    display: flex;
+}
+
+.modal__form {
+    width: 400px;
+    min-height: 200px;
+    padding: 20px;
+    border-radius: 6px;
+    background: #fff;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+.modal__form h3 {
+    text-align: center;
+    color: #444;
+    margin-bottom: 15px;
+}
+
+
+/* TASKLIST */
+.tasks__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+}
+.tasks__list__empty {
+    color: #444;
+}
+/* TASKS */
+.tasks {
+    border-radius: 4px;
+    padding: 15px;
+    min-height: 200px;
+    position: relative;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+.btnDelTasks {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+}
+.btnDelTasks i {
+    font-size: 25px;
+    color: #D61C4E;
+    cursor: pointer;
+}
+.tasks__header {
+    color: #444;
+}
+.tasks__header h1 {
+    font-size: 40px;
+    margin-right: 10px;
+}
+.tasks__body {
+    margin-top: 20px;
+}
+.tasks__body h2 {
+    margin-bottom: 10px;
+    text-align: center;
+}
+.task__list .task {
+    margin-bottom: 10px;
+    padding: 6px;
+    border-radius: 4px;
+}
+.task__list .task:hover {
+    text-decoration: line-through;
+    cursor: pointer;
+    background-color: #ccc;
+}
+
+.task__btn__group .btn {
+    padding: 6px 10px;
+}
+.tasks__empty {
+    text-align: center;
+}
+.tasks__form {
+    align-items: center;
+}
+.tasks__form input {
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    margin-right: 8px;
+}
+.tasks__empty {
+    text-align: center;
+}
+.tasks__icon__add {
+    text-align: center;
+    margin-top: 20px;
+}
+.tasks__icon__add i {
+    font-size: 40px;
+    color: #019267;
+    cursor: pointer;
+}

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <main class="container">
+        <div class="overlay flex__center">
+            <form class="modal__form">
+                <h3>Add New Tasklist</h3>
+                <div class="input__control">
+                    <label for="tasksTitle">Tasks Title</label>
+                    <input type="text" id="tasksTitle" placeholder="Type tasks title here...">
+                </div>
+                <div class="input__control">
+                    <label for="tasksDate">Tasks Date</label>
+                    <input type="date" id="tasksDate">
+                </div>
+                <div class="btn__group flex__center">
+                    <button class="btn" type="submit">Add Tasks</button>
+                    <button class="btn btn__secondary btnClose" type="button">Cancel</button>
+                </div>
+            </form>
+        </div>
+        <header class="header flex__between">
+            <h2>Node Tasks</h2>
+            <button class="btn btnAdd">New Tasklist</button>
+        </header>
+        <section class="page">
+            <% if(data.length > 0) { %>
+                <% months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'] %>
+                <% days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %>
+
+                <div class="tasks__list">
+                    <% data.forEach(tasks => { %>
+                        <div class="tasks" data-id="<%= tasks.id %>">
+                            <div class="btnDelTasks">
+                                <i class="fa-solid fa-circle-xmark"></i>
+                            </div>
+                            <div class="tasks__header flex__between">
+                                <div class="tasks__header__left flexx">
+                                    <h1><%= new Date(tasks.tasksDate).getDate() %></h1>
+                                    <div class="flex" style="flex-direction: column;">
+                                        <p><%= new Date(tasks.tasksDate).getFullYear() %></p>
+                                        <p><%= months[new Date(tasks.tasksDate).getMonth()] %></p>
+                                    </div>
+                                </div>
+                                <p><%= days[new Date(tasks.tasksDate).getDay() - 1] %></p>
+                            </div>
+
+                            <div class="tasks__body">
+                                <h2><%= tasks.tasksTitle %></h2>
+                                <% if(tasks.tasks.length < 1) { %>
+                                    <p class="tasks__empty">Task not available!</p>
+                                <% } else { %>
+                                    <div class="task__list">
+                                        <% tasks.tasks.forEach(task => { %>
+                                            <div class="task flex__between">
+                                                <p><%= task.task %></p>
+                                                <div class="task__btn__group">
+                                                    <button class="btn btn__danger btnDelTask" data-tasksid="<%= tasks.id %>" data-id="<%= task.id %>">Delete</button>
+                                                </div>
+                                            </div>
+                                        <% }) %>
+                                    </div>
+                                <% } %>
+                                <div class="hidden tasks__form">
+                                    <input type="text" class="tasks__input" placeholder="Type new task here...">
+                                    <button class="btn btnAddTask" data-id="<%= tasks.id %>">Add</button>
+                                </div>
+                            </div>
+
+
+                            <div class="tasks__icon__add">
+                                <i class="fa-solid fa-circle-plus addTask"></i>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            <% } else { %>
+                <div class="tasks__list__empty flex__center">
+                    <p>Tasklist not available</p>
+                </div>
+            <% } %>
+        </section>
+    </main>
+
+
+    <script>
+        
+        const btnAdd = document.querySelector('.btnAdd')
+        const btnClose = document.querySelector('.btnClose')
+        const overlay = document.querySelector('.overlay')
+        const modalForm = document.querySelector('.modal__form')
+        const tasksTitle = document.getElementById('tasksTitle')
+        const tasksDate = document.getElementById('tasksDate')
+        const addsTask = document.querySelectorAll('.addTask')
+
+        const tasks = document.querySelectorAll('.tasks')
+
+        btnAdd.addEventListener('click', () => {
+            overlay.classList.add('active')
+
+            modalForm.addEventListener('submit', (e) => {
+                e.preventDefault()
+                if(tasksTitle.value && tasksDate.value) {
+                    fetch('http://localhost:5000/api/tasks', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            tasksTitle: tasksTitle.value,
+                            tasksDate: tasksDate.value 
+                        })
+                    }).then(res => res.json()).then(() => {
+                       overlay.classList.remove('active')
+                       location.reload()
+                    })
+                } else {
+                    alert('Please fill all input fields')
+                }
+            })
+        })
+
+
+        btnClose.addEventListener('click', () => {
+            overlay.classList.remove('active')
+            tasksTitle.value = ''
+            tasksDate.value = ''
+        })
+
+
+        tasks.forEach(tasks => {
+            const tasksForm = tasks.querySelector('.tasks__form')
+            const addTask = tasks.querySelector('.addTask')
+            const tasksEmpty = tasks.querySelector('.tasks__empty')
+            const btnAddTask = tasks.querySelector('.btnAddTask')
+            const tasksFormInput = tasks.querySelector('.tasks__input')
+            const task = tasks.querySelectorAll('.task')
+            const btnDelTasks = tasks.querySelector('.btnDelTasks i')
+            const btnDelTask = tasks.querySelectorAll('.btnDelTask')
+            addTask.addEventListener('click', () => {
+                if(tasksForm.classList.contains('hidden')) {
+                    tasksForm.classList.add('active')
+                    tasksForm.classList.remove('hidden')
+                    tasksEmpty.style.display = 'none'
+                } else {
+                    tasksForm.classList.remove('active')
+                    tasksForm.classList.add('hidden')
+                    tasksEmpty.style.display = 'block'
+                }
+            })
+            task.forEach(ele => {
+                ele.addEventListener('click', (e) => {
+                    if(ele.classList.contains('done')) {
+                        ele.classList.remove('done')
+                    } else {
+                        ele.classList.add('done')
+                    }
+                })
+                
+            })
+            btnDelTasks.addEventListener('click', () => {
+                if(confirm('Are you sure want to delete this tasks')) {
+                    fetch(`http://localhost:5000/api/tasks/${tasks.dataset.id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(res => res.json()).then(() => {
+                        location.reload()
+                    })
+                }
+            })
+            btnDelTask.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation()
+                    fetch(`http://localhost:5000/api/tasks/${btn.dataset.tasksid}/${btn.dataset.id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(res => res.json()).then((res) => {
+                        console.log(res)
+                        location.reload()
+                    })
+                })
+            })
+
+            btnAddTask.addEventListener('click', () => {
+                fetch(`http://localhost:5000/api/tasks/${btnAddTask.dataset.id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        task: tasksFormInput.value
+                    })
+                }).then(res => res.json()).then((res) => {
+                    tasksForm.classList.remove('active')
+                    tasksForm.classList.add('hidden')
+                    location.reload()
+                })
+            })
+        })
+
+        
+
+    </script>
+</body>
+</html>
