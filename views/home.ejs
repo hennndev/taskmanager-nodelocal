@@ -103,13 +103,15 @@
 
         const tasks = document.querySelectorAll('.tasks')
 
+        const domain = "https://taskmanager-nodelocal.herokuapp.com" || "http://localhost:5000"
+
         btnAdd.addEventListener('click', () => {
             overlay.classList.add('active')
 
             modalForm.addEventListener('submit', (e) => {
                 e.preventDefault()
                 if(tasksTitle.value && tasksDate.value) {
-                    fetch('http://localhost:5000/api/tasks', {
+                    fetch('${domain}/api/tasks', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -168,7 +170,7 @@
             })
             btnDelTasks.addEventListener('click', () => {
                 if(confirm('Are you sure want to delete this tasks')) {
-                    fetch(`http://localhost:5000/api/tasks/${tasks.dataset.id}`, {
+                    fetch(`${domain}/api/tasks/${tasks.dataset.id}`, {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json'
@@ -181,7 +183,7 @@
             btnDelTask.forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation()
-                    fetch(`http://localhost:5000/api/tasks/${btn.dataset.tasksid}/${btn.dataset.id}`, {
+                    fetch(`${domain}/api/tasks/${btn.dataset.tasksid}/${btn.dataset.id}`, {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json'
@@ -194,7 +196,7 @@
             })
 
             btnAddTask.addEventListener('click', () => {
-                fetch(`http://localhost:5000/api/tasks/${btnAddTask.dataset.id}`, {
+                fetch(`${domain}/api/tasks/${btnAddTask.dataset.id}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
