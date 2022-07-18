@@ -111,7 +111,7 @@
             modalForm.addEventListener('submit', (e) => {
                 e.preventDefault()
                 if(tasksTitle.value && tasksDate.value) {
-                    fetch('${domain}/api/tasks', {
+                    fetch(`${domain}/api/tasks`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
